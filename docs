@@ -1,0 +1,107 @@
+GramFinance
+
+A decentralized finance (DeFi) platform designed to empower rural financial agents and users with access to micro-loans, savings, and insurance—delivered through simple interfaces like WhatsApp and voice input.
+
+
+Project Structure
+```
+GramFinance/
+├── frontend/           # React + Tailwind UI
+├── backend/            # Express.js API for identity, wallet, loans
+├── contracts/          # Solidity smart contracts
+└── docs/               # Documentation (this file)
+```
+
+---
+
+Features
+- Agent onboarding via Aadhaar (simulated)
+- Wallet setup via MetaMask or WalletConnect
+- Voice-based loan request (via AI)
+- Micro-loan smart contracts with 3% interest
+- Auto-savings and livestock insurance (future)
+- On-chain credit history
+- Rewards system for active agents
+
+---
+Technologies Used
+| Layer       | Tools                          |
+|-------------|----------------------------------|
+| Frontend    | React.js, Tailwind CSS, Router  |
+| Backend     | Node.js, Express.js, Firebase   |
+| Blockchain  | Solidity, Hardhat, Polygon      |
+| Identity    | Aadhaar (simulated), IPFS       |
+| Wallet      | MetaMask, WalletConnect         |
+| Voice/AI    | OpenAI Whisper, GramGPT         |
+
+---
+
+Setup Instructions
+
+ 1. Clone & Install
+```bash
+git clone https://github.com/your-org/GramFinance.git
+cd GramFinance
+```
+
+ 2. Setup Frontend
+```bash
+cd frontend
+npm install
+npm run dev # or npm start
+```
+
+3. Setup Backend
+```bash
+cd backend
+npm install
+npm start
+```
+
+4. Compile & Deploy Contracts
+```bash
+cd contracts
+npm install
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network polygonMumbai
+```
+
+---
+
+API Routes (Backend)
+| Endpoint            | Method | Description                        |
+|---------------------|--------|------------------------------------|
+| `/verify-agent`     | POST   | Aadhaar agent verification         |
+| `/connect-wallet`   | POST   | Connect MetaMask wallet            |
+| `/request-loan`     | POST   | Request loan with voice consent    |
+
+---
+
+Example User Flow (Meena's Story)
+1. Meena meets agent Ravi
+2. Ravi verifies her using Aadhaar
+3. Wallet created and linked
+4. Meena says in Tamil: _"Enakku 5000 rupaayi kadan venum"_
+5. Voice is transcribed and consent stored
+6. Loan smart contract disburses ₹5000
+7. Meena repays monthly via wallet
+8. Her credit history grows on-chain
+
+---
+
+Future Scope
+- Aadhaar + UPI real integration (via Signzy/Karza)
+- Deploy on Polygon mainnet
+- Launch GramToken for incentives
+- Insurance via Etherisc
+- Multilingual chatbot and mobile app
+
+---
+
+Team: Data Miners
+Built for financial inclusion in rural India 
+
+---
+
+## 📄 License
+MIT
