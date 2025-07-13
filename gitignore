@@ -1,0 +1,85 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+
+# Hardhat and Ethereum
+artifacts/
+cache/
+typechain/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Coverage and test reports
+coverage/
+*.lcov
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Firebase
+firebase-debug.log
+.firebaserc
+
+# IPFS
+.ipfs/
+.ipfs-log
+
+# React specific
+*.env
+*.env.*.local
+
+# Optional: if using Linux/Mac build artifacts
+*.out
+*.pid
+*.pid.lock
+
+# Ignore lock files if using one package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore frontend and backend dev builds
+frontend/.next/
+frontend/.cache/
+frontend/.turbo/
+frontend/.env*
+frontend/public/static/
+
+backend/.env*
+backend/logs/
+backend/*.sqlite
+
+# Ignore artifacts from contract deployment
+contracts/.env
+contracts/artifacts/
+contracts/cache/
+contracts/typechain/
+contracts/deployments/
+
+# Ignore test data
+*.test.js
+*.test.ts
