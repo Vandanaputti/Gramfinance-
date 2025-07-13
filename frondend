@@ -1,0 +1,117 @@
+// File: frontend/src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { AgentDashboard } from './pages/AgentDashboard';
+import { LoanRequest } from './pages/LoanRequest';
+import { WalletSetup } from './pages/WalletSetup';
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/agent" element={<AgentDashboard />} />
+          <Route path="/loan" element={<LoanRequest />} />
+          <Route path="/wallet" element={<WalletSetup />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+
+// File: frontend/src/main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// File: frontend/src/pages/Home.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export const Home: React.FC = () => {
+  return (
+    <div className="p-4 text-center">
+      <h1 className="text-3xl font-bold mb-4">Welcome to GramFinance</h1>
+      <p className="mb-6">Empowering rural communities through DeFi.</p>
+      <Link to="/agent" className="bg-blue-600 text-white px-4 py-2 rounded-lg">Agent Dashboard</Link>
+    </div>
+  );
+};
+
+// File: frontend/src/pages/AgentDashboard.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export const AgentDashboard: React.FC = () => {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">Agent Dashboard</h2>
+      <Link to="/wallet" className="block mb-2 text-blue-600">Set up Wallet</Link>
+      <Link to="/loan" className="block text-blue-600">Request a Loan</Link>
+    </div>
+  );
+};
+
+// File: frontend/src/pages/WalletSetup.tsx
+import React from 'react';
+
+export const WalletSetup: React.FC = () => {
+  const handleWalletConnect = () => {
+    alert("Simulating wallet connection...");
+  };
+
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">Wallet Setup</h2>
+      <button onClick={handleWalletConnect} className="bg-green-600 text-white px-4 py-2 rounded-lg">
+        Connect Wallet
+      </button>
+    </div>
+  );
+};
+
+// File: frontend/src/pages/LoanRequest.tsx
+import React, { useState } from 'react';
+
+export const LoanRequest: React.FC = () => {
+  const [amount, setAmount] = useState('');
+
+  const handleSubmit = () => {
+    alert(`Loan requested: ₹${amount}`);
+  };
+
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">Request a Loan</h2>
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Enter amount"
+        className="border px-2 py-1 rounded mb-4"
+      />
+      <br />
+      <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+        Submit
+      </button>
+    </div>
+  );
+};
+
+// File: frontend/src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add additional custom styles here if needed */
