@@ -1,0 +1,82 @@
+// File: backend/server.js
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.get('/', (req, res) => {
+  res.send('GramFinance Backend API is running');
+});
+
+app.post('/verify-agent', (req, res) => {
+  const { aadhaarId, name } = req.body;
+  // Simulate verification
+  if (aadhaarId && name) {
+    return res.json({ success: true, agentId: 'AGENT123' });
+  }
+  res.status(400).json({ success: false, message: 'Invalid data' });
+});
+
+app.post('/request-loan', (req, res) => {
+  const { userId, amount, voiceConsentHash } = req.body;
+  // Simulate loan processing
+  if (userId && amount && voiceConsentHash) {
+    return res.json({ success: true, loanId: 'LOAN456', status: 'approved' });
+  }
+  res.status(400).json({ success: false, message: 'Missing parameters' });
+});
+
+app.post('/connect-wallet', (req, res) => {
+  const { userId, walletAddress } = req.body;
+  if (userId && walletAddress) {
+    return res.json({ success: true, walletLinked: true });
+  }
+  res.status(400).json({ success: false, message: 'Missing data' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Backend server running on http://localhost:${PORT}`);
+});
+
+// File: backend/.env
+PORT=5000
+
+// File: backend/package.json
+{
+  "name": "gramfinance-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}
+
+// File: backend/README.md
+# GramFinance Backend
+
+## Description
+Simple Express.js API for handling identity verification, wallet connection, and loan requests.
+
+## Running Locally
+```bash
+npm install
+npm start
+```
+
+## Routes
+- `POST /verify-agent` → `{ aadhaarId, name }`
+- `POST /request-loan` → `{ userId, amount, voiceConsentHash }`
+- `POST /connect-wallet` → `{ userId, walletAddress }`
