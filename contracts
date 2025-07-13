@@ -1,0 +1,134 @@
+// File: contracts/AgentRegistry.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract AgentRegistry {
+    address public admin;
+
+    struct Agent {
+        string name;
+        string aadhaarId;
+        bool isVerified;
+    }
+
+    mapping(address => Agent) public agents;
+
+    event AgentRegistered(address indexed agentAddress, string name);
+    event AgentVerified(address indexed agentAddress);
+
+    constructor() {
+        admin = msg.sender;
+    }
+
+    function registerAgent(string memory _name, string memory _aadhaarId) public {
+        agents[msg.sender] = Agent(_name, _aadhaarId, false);
+        emit AgentRegistered(msg.sender, _name);
+    }
+
+    function verifyAgent(address _agentAddress) public {
+        require(msg.sender == admin, "Only admin can verify agents");
+        agents[_agentAddress].isVerified = true;
+        emit AgentVerified(_agentAddress);
+    }
+
+    function isAgentVerified(address _agentAddress) public view returns (bool) {
+        return agents[_agentAddress].isVerified;
+    }
+}
+
+// File: contracts/LoanContract.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract LoanContract {
+    address public admin;
+    uint public loanCounter;
+
+    struct Loan {
+        address borrower;
+        uint amount;
+        uint repayAmount;
+        uint dueDate;
+        bool isRepaid;
+    }
+
+    mapping(uint => Loan) public loans;
+
+    event LoanRequested(uint loanId, address indexed borrower, uint amount);
+    event LoanRepaid(uint loanId, address indexed borrower);
+
+    constructor() {
+        admin = msg.sender;
+    }
+
+    function requestLoan(uint _amount) public {
+        uint repayAmount = _amount + (_amount * 3 / 100); // 3% interest
+        loans[loanCounter] = Loan(msg.sender, _amount, repayAmount, block.timestamp + 180 days, false);
+        emit LoanRequested(loanCounter, msg.sender, _amount);
+        loanCounter++;
+    }
+
+    function repayLoan(uint _loanId) public payable {
+        Loan storage loan = loans[_loanId];
+        require(msg.sender == loan.borrower, "Not borrower");
+        require(!loan.isRepaid, "Already repaid");
+        require(msg.value >= loan.repayAmount, "Insufficient repayment");
+
+        loan.isRepaid = true;
+        emit LoanRepaid(_loanId, msg.sender);
+    }
+}
+
+// File: contracts/SavingsPool.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SavingsPool {
+    mapping(address => uint) public balances;
+
+    event Deposited(address indexed user, uint amount);
+    event Withdrawn(address indexed user, uint amount);
+
+    function deposit() public payable {
+        require(msg.value > 0, "Amount must be > 0");
+        balances[msg.sender] += msg.value;
+        emit Deposited(msg.sender, msg.value);
+    }
+
+    function withdraw(uint _amount) public {
+        require(balances[msg.sender] >= _amount, "Insufficient balance");
+        balances[msg.sender] -= _amount;
+        payable(msg.sender).transfer(_amount);
+        emit Withdrawn(msg.sender, _amount);
+    }
+
+    function checkBalance() public view returns (uint) {
+        return balances[msg.sender];
+    }
+}
+
+// File: contracts/RewardsModule.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract RewardsModule {
+    mapping(address => uint) public rewards;
+
+    event RewardAdded(address indexed agent, uint amount);
+    event RewardClaimed(address indexed agent, uint amount);
+
+    function addReward(address _agent, uint _amount) public {
+        rewards[_agent] += _amount;
+        emit RewardAdded(_agent, _amount);
+    }
+
+    function claimReward() public {
+        uint amount = rewards[msg.sender];
+        require(amount > 0, "No rewards to claim");
+        rewards[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+        emit RewardClaimed(msg.sender, amount);
+    }
+
+    receive() external payable {}
+}
